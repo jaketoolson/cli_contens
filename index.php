@@ -12,8 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CheckIsIntOrDoubleCommand extends Command
 {
+    const TYPE_DOUBLE = 'double';
     const TYPE_FLOAT = 'float';
-    const TYPE_DOUBLE = self::TYPE_FLOAT;
     const TYPE_INT = 'integer';
 
     /**
@@ -46,8 +46,8 @@ class CheckIsIntOrDoubleCommand extends Command
 
         if ($this->isInt($sanitizedInputValue)) {
             $text = self::TYPE_INT;
-        } elseif ($this->isFloat($sanitizedInputValue)) {
-            $text = self::TYPE_FLOAT;
+        } elseif ($this->isDouble($sanitizedInputValue)) {
+            $text = self::TYPE_DOUBLE;
         } else {
             $text = gettype($sanitizedInputValue);
         }
@@ -73,6 +73,19 @@ class CheckIsIntOrDoubleCommand extends Command
     private function isFloat($value)
     {
         return isFloat($value);
+    }
+
+    /**
+     * from: http://de2.php.net/manual/en/function.gettype.php,
+     * "... double (for historical reasons "double" is returned in case of a float, and not simply "float")"
+     *
+     * @param $value
+     *
+     * @return bool
+     */
+    private function isDouble($value)
+    {
+        return $this->isFloat($value);
     }
 
     /**

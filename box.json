@@ -1,0 +1,7 @@
+{
+  "directories": ["vendor"],
+  "output": "app.phar",
+  "files": ["bootstrap.php"],
+  "main" : "index.php",
+  "stub": true
+}

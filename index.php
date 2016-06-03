@@ -62,7 +62,7 @@ class CheckIsIntOrDoubleCommand extends Command
      */
     private function isInt($value)
     {
-        return (bool) ctype_digit($value);
+        return isInt($value);
     }
 
     /**
@@ -72,7 +72,7 @@ class CheckIsIntOrDoubleCommand extends Command
      */
     private function isFloat($value)
     {
-        return (string) (float) ($value) === (string) $value || false !== filter_var($value, FILTER_VALIDATE_FLOAT);
+        return isFloat($value);
     }
 
     /**

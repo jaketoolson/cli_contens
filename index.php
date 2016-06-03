@@ -12,6 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CheckIsIntOrDoubleCommand extends Command
 {
+    const TYPE_FLOAT = 'float';
+    const TYPE_DOUBLE = self::TYPE_FLOAT;
+    const TYPE_INT = 'integer';
+
     /**
      * Configure the command line name, accepted argument, description
      */
@@ -19,11 +23,11 @@ class CheckIsIntOrDoubleCommand extends Command
     {
         $this
             ->setName('check')
-            ->setDescription('Checks if the input is an integer or a float/double')
+            ->setDescription('Checks if the input is an '.self::TYPE_INT.' or a '.self::TYPE_DOUBLE)
             ->addArgument(
                 'check',
                 InputArgument::REQUIRED,
-                'Is the input an integer or a float/double?'
+                'Is the input an '.self::TYPE_INT.' or a '.self::TYPE_DOUBLE.'?'
             );
     }
 
@@ -41,9 +45,9 @@ class CheckIsIntOrDoubleCommand extends Command
         $sanitizedInputValue = $this->sanitizeInput($rawInputValue);
 
         if ($this->isInt($sanitizedInputValue)) {
-            $text = 'integer';
+            $text = self::TYPE_INT;
         } elseif ($this->isFloat($sanitizedInputValue)) {
-            $text = 'float/double';
+            $text = self::TYPE_FLOAT;
         } else {
             $text = gettype($sanitizedInputValue);
         }
@@ -58,7 +62,7 @@ class CheckIsIntOrDoubleCommand extends Command
      */
     private function isInt($value)
     {
-        return ctype_digit($value);
+        return (bool) ctype_digit($value);
     }
 
     /**
@@ -68,7 +72,7 @@ class CheckIsIntOrDoubleCommand extends Command
      */
     private function isFloat($value)
     {
-        return (string) (float) ($value) === (string) $value;
+        return ((string) (float) ($value) === (string) $value) && (false !== filter_var($value, FILTER_VALIDATE_FLOAT));
     }
 
     /**
